@@ -14,13 +14,10 @@ const params = {
   renderFile: require(path.join(renderFolder, "default"))
 };
 
-const markdownFiles = [
-  path.join(params.contentFolder, "**/*.md"),
-  path.join(params.contentFolder, "**/*.markdown")
-];
+const jsonFiles = path.join(params.contentFolder, "**/*.json");
 
 async function init() {
-  params.files = await globby(markdownFiles, { onlyFiles: true });
+  params.files = await globby(jsonFiles, { onlyFiles: true });
   await redaktor(params);
 }
 

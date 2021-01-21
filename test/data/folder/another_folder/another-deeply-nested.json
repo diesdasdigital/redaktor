@@ -1,0 +1,10 @@
+{
+  "en": {
+    "required": {
+      "title": "Another Deeply Nested",
+      "pageType": "default"
+    },
+    "fields": {},
+    "components": []
+  }
+}

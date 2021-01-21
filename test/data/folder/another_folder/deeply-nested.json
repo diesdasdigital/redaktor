@@ -1,0 +1,10 @@
+{
+  "en": {
+    "required": {
+      "title": "Deeply Nested",
+      "pageType": "default"
+    },
+    "fields": {},
+    "components": []
+  }
+}

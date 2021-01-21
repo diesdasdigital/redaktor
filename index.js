@@ -3,11 +3,9 @@
 const path = require("path");
 
 const fs = require("fs-extra");
-const yaml = require("yaml-front-matter");
 const chalk = require("chalk");
 const { cloneDeep } = require("lodash");
 
-const REGEX_NEWLINES = /^\n+/;
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
 async function redaktor(cliParams) {
   const fileContents = await Promise.all(
@@ -25,21 +23,18 @@ async function redaktor(cliParams) {
   console.log(chalk.green(`✅ rendered ${renderedFiles.length} files`));
 }
 
-function getFileContents(markdownFolder) {
+function getFileContents(dataFolder) {
   return async filePath => {
     try {
       const extension = path.extname(filePath);
       const relativePath = path
-        .relative(markdownFolder, filePath)
+        .relative(dataFolder, filePath)
         .replace(new RegExp(extension + "$"), "");
 
       console.log(chalk.blue("👓 reading " + filePath));
-      const contents = await fs.readFile(filePath, "utf-8");
+      const content = await fs.readJSON(filePath);
 
-      const data = yaml.loadFront(contents, "markdown");
-      data.markdown = data.markdown.replace(REGEX_NEWLINES, "");
-      data.path = relativePath;
-      return data;
+      return { content, path: relativePath };
     } catch (error) {
       console.error(`⏩ skipped ${filePath}: ${error}`);
       return false;

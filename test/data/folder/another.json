@@ -1,0 +1,10 @@
+{
+  "en": {
+    "required": {
+      "title": "Another",
+      "pageType": "default"
+    },
+    "fields": {},
+    "components": []
+  }
+}

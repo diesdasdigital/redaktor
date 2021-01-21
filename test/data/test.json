@@ -1,0 +1,10 @@
+{
+  "en": {
+    "required": {
+      "title": "Test",
+      "pageType": "default"
+    },
+    "fields": {},
+    "components": []
+  }
+}

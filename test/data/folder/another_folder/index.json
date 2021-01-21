@@ -1,0 +1,10 @@
+{
+  "en": {
+    "required": {
+      "title": "Folder",
+      "pageType": "index"
+    },
+    "fields": {},
+    "components": []
+  }
+}

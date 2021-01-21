@@ -1,4 +1,0 @@
-Index
-=====
-
-This is **markdown**.
