@@ -1,16 +1,15 @@
 {
-  "name": "yaml-markdown-to-html",
-  "version": "10.1.0",
-  "description": "render a folder of markdown files with yaml front matter to html",
+  "name": "redaktor",
+  "version": "0.0.1",
+  "description": "A CMS by diesdas.digital.",
   "main": "index.js",
   "bin": "bin/cli",
-  "author": "Maximilian Hoffmann",
-  "license": "MIT",
+  "author": "diesdas.digital",
   "repository": {
     "type": "git",
-    "url": "https://maxhoffmann@github.com/maxhoffmann/yaml-markdown-to-html"
+    "url": "https://github.com/diesdasdigital/redaktor"
   },
-  "homepage": "https://github.com/maxhoffmann/yaml-markdown-to-html",
+  "homepage": "https://github.com/diesdasdigital/redaktor",
   "scripts": {
     "test": "tape 'test/**/*.js' | tap-spec",
     "build": "bin/cli test/content dist test/render"
@@ -23,11 +22,11 @@
     "yaml-front-matter": "^4.1.1"
   },
   "keywords": [
-    "markdown",
-    "yaml",
-    "front matter",
-    "html",
-    "render"
+    "cms",
+    "files",
+    "json",
+    "static site builder",
+    "jam stack"
   ],
   "devDependencies": {
     "tap-spec": "^5.0.0",
