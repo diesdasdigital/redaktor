@@ -5,7 +5,8 @@ const path = require("path");
 const fs = require("fs-extra");
 const chalk = require("chalk");
 const { cloneDeep } = require("lodash");
-const { exit } = require("process");
+
+const DEFAULT_LANGUAGE = "en";
 
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
 async function redaktor(cliParams) {
@@ -63,7 +64,7 @@ function renderEachFile(htmlFolder, viewFolder) {
     console.log(chalk.cyan("⚙️ rendering " + file.path));
     const renderFunction = require(path.resolve(
       viewFolder,
-      file.data.en.required.pageType || "default"
+      file.data[DEFAULT_LANGUAGE].required.pageType || "default"
     ));
 
     const renderedHtml = await renderFunction(
