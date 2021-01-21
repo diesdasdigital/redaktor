@@ -1,0 +1,25 @@
+{
+  "default": {
+    "required": {
+      "title": "Components",
+      "pageType": "components"
+    },
+    "fields": {},
+    "components": [
+      {
+        "type": "custom-button",
+        "data": {
+          "label": "click me",
+          "url": "https://diesdas.digital"
+        }
+      },
+      {
+        "type": "custom-image",
+        "data": {
+          "alt": "accessibility yo!",
+          "url": "https://images.diesdas.digital/media/pages/global-assets/f5193acf57-1581604571/workshop-pass.svg?auto=format"
+        }
+      }
+    ]
+  }
+}

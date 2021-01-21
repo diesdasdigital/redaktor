@@ -212,7 +212,7 @@ test.skip("usage", async function (is) {
 });
 
 test("CLI", async function (is) {
-  is.plan(8);
+  is.plan(9);
   await fs.remove("test/html");
 
   child_process.execSync("yarn build ./test");
@@ -272,6 +272,20 @@ test("CLI", async function (is) {
   const expected8 = await fs.readFile("test/expected/components.html", "utf-8");
   const actual8 = await fs.readFile("test/html/components.html", "utf-8");
   is.equal(actual8, expected8, "rendered html with components is as expected");
+
+  const expected9 = await fs.readFile(
+    "test/expected/custom-components.html",
+    "utf-8"
+  );
+  const actual9 = await fs.readFile(
+    "test/html/custom-components.html",
+    "utf-8"
+  );
+  is.equal(
+    actual9,
+    expected9,
+    "rendered html with custom components is as expected"
+  );
 
   await fs.remove("test/html");
 });

@@ -8,11 +8,15 @@
     "components": [
       {
         "type": "headline",
-        "value": "Hello Redaktor!"
+        "data": {
+          "text": "Hello Redaktor!"
+        }
       },
       {
         "type": "paragraph",
-        "value": "This is our hello world."
+        "data": {
+          "text": "This is our hello world."
+        }
       }
     ]
   }
