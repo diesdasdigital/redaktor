@@ -2,7 +2,7 @@
   "default": {
     "required": {
       "title": "Another",
-      "pageType": "default"
+      "pageType": "code-preview"
     },
     "fields": {},
     "components": []

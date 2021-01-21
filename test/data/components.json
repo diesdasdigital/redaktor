@@ -1,8 +1,7 @@
 {
   "default": {
     "required": {
-      "title": "Components",
-      "pageType": "components"
+      "title": "Components"
     },
     "fields": {},
     "components": [

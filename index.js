@@ -88,14 +88,17 @@ function renderEachFile(htmlFolder, cmsFolder) {
         path.join(cmsFolder, "page-views"),
         file.data.default.required.pageType || "default"
       ));
-    } catch (error) {}
-
-    try {
-      viewFunction = require(path.resolve(
-        path.join(cmsFolder, "system", "page-views"),
-        file.data.default.required.pageType || "default"
-      ));
-    } catch (error) {}
+    } catch (error) {
+      try {
+        viewFunction = require(path.resolve(
+          path.join(cmsFolder, "system", "page-views"),
+          file.data.default.required.pageType || "default"
+        ));
+      } catch (error) {
+        viewFunction = () =>
+          Promise.resolve(`error rendering ${pageType}: ${error}`);
+      }
+    }
 
     const renderedView = await viewFunction(
       clonedFile,

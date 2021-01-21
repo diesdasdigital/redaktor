@@ -2,7 +2,7 @@
   "default": {
     "required": {
       "title": "Home",
-      "pageType": "index"
+      "pageType": "code-preview"
     },
     "fields": {},
     "components": []

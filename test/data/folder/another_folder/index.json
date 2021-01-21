@@ -2,7 +2,7 @@
   "default": {
     "required": {
       "title": "Another Folder",
-      "pageType": "index"
+      "pageType": "code-preview"
     },
     "fields": {},
     "components": []
