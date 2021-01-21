@@ -14,7 +14,6 @@ var sourceFiles = globby.sync(sourcePatterns, { nodir: true });
 test("errors", async function (is) {
   is.plan(2);
 
-  await fs.remove(".yamlmd2htmlcache");
   await fs.remove("test/public");
 
   try {
@@ -22,7 +21,7 @@ test("errors", async function (is) {
       contentFolder: "test/content",
       publicFolder: "test/public",
       files: sourceFiles,
-      renderFile: "",
+      renderFile: ""
     });
     is.fail("missing render function doesn’t error");
   } catch (error) {
@@ -36,14 +35,13 @@ test("errors", async function (is) {
       files: sourceFiles,
       renderFile: function () {
         return Promise.resolve("html");
-      },
+      }
     });
     is.pass("valid render function");
   } catch (error) {
     is.fail("valid parameters are failing");
   }
 
-  await fs.remove(".yamlmd2htmlcache");
   await fs.remove("test/public");
 });
 
@@ -57,10 +55,9 @@ test("usage", async function (is) {
     publicFolder: "test/public",
     files: sourceFiles,
     renderFile: render,
-    postRenderFile: postRender,
+    postRenderFile: postRender
   });
 
-  await fs.remove(".yamlmd2htmlcache");
   await fs.remove("test/public");
 
   function render(currentFile, filesInCurrentFolder, allFiles) {
@@ -249,127 +246,6 @@ test("usage", async function (is) {
       })
     );
 
-    return Promise.resolve(renderedFiles);
-  }
-});
-
-test("cache", async function (is) {
-  is.plan(30);
-
-  await fs.remove(".yamlmd2htmlcache");
-  await fs.remove("test/public");
-
-  await yamlMarkdownToHtml({
-    contentFolder: "test/content",
-    publicFolder: "test/public",
-    files: sourceFiles,
-    renderFile: noCacheRender,
-    postRenderFile: noCachePostRender,
-  });
-
-  await yamlMarkdownToHtml({
-    contentFolder: "test/content",
-    publicFolder: "test/public",
-    files: sourceFiles,
-    renderFile: cachedRender,
-    postRenderFile: cachedPostRender,
-  });
-
-  const oldContent = await fs.readFile("test/content/index.md", "utf-8");
-
-  try {
-    await fs.outputFile("test/content/index.md", "# Updated File");
-  } catch {
-    is.fail("error updating existing markdown file");
-  }
-
-  try {
-    await fs.outputFile("test/content/uncached.md", "# New File");
-  } catch {
-    is.fail("error writing new markdown file");
-  }
-
-  await yamlMarkdownToHtml({
-    contentFolder: "test/content",
-    publicFolder: "test/public",
-    files: await globby(sourcePatterns, { nodir: true }),
-    renderFile: outdatedCacheRender,
-    postRenderFile: outdatedCachePostRender,
-  });
-
-  try {
-    await fs.outputFile("test/content/index.md", oldContent);
-  } catch {
-    is.fail("error fixing markdown file");
-  }
-
-  await fs.remove(".yamlmd2htmlcache");
-  await fs.remove("test/public");
-  await fs.remove("test/content/uncached.md");
-
-  await yamlMarkdownToHtml({
-    contentFolder: "test/content",
-    publicFolder: "test/public",
-    files: await globby(sourcePatterns, { nodir: true }),
-    renderFile: noCacheRender,
-    postRenderFile: noCachePostRender,
-  });
-
-  await fs.remove(".yamlmd2htmlcache");
-  await fs.remove("test/public");
-
-  function noCacheRender(currentFile) {
-    is.pass("render was called");
-    return Promise.resolve(JSON.stringify(currentFile, null, 2));
-  }
-
-  function noCachePostRender(renderedFiles) {
-    is.pass("postRender called");
-
-    is.ok(
-      renderedFiles.every(function (file) {
-        return typeof file === "object";
-      }),
-      "renderedFiles contains objects"
-    );
-    is.equal(sourceFiles.length, renderedFiles.length);
-
-    is.deepEqual(
-      sourceFiles.map(function (file) {
-        return file
-          .replace(".md", "")
-          .replace(".markdown", "")
-          .replace("/content/", "/public/");
-      }),
-      renderedFiles.map(function (file) {
-        return file.renderedPath.replace(".html", "");
-      })
-    );
-
-    return Promise.resolve(renderedFiles);
-  }
-
-  function cachedRender() {
-    is.fail("render function was called despite the cache being active");
-  }
-
-  function cachedPostRender() {
-    is.fail("postRender was called");
-  }
-
-  function outdatedCacheRender(currentFile) {
-    is.ok(
-      ["uncached", "index"].includes(currentFile.path),
-      "render was called with uncached file"
-    );
-    return Promise.resolve(JSON.stringify(currentFile, null, 2));
-  }
-
-  function outdatedCachePostRender(renderedFiles) {
-    is.pass("postRender called");
-
-    console.log("!! changed files", renderedFiles.length);
-    is.strictEqual(renderedFiles.length, 2, "only two files were rendered");
     return Promise.resolve(renderedFiles);
   }
 });

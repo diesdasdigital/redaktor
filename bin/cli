@@ -11,13 +11,12 @@ const params = {
   contentFolder: args[0] || "content",
   publicFolder: args[1] || "public",
   renderFile: require(path.join(renderFolder, "render")),
-  skipCache: args[3] === "--skipCache",
-  postRenderFile: false,
+  postRenderFile: false
 };
 
 const markdownFiles = [
   path.join(params.contentFolder, "**/*.md"),
-  path.join(params.contentFolder, "**/*.markdown"),
+  path.join(params.contentFolder, "**/*.markdown")
 ];
 
 async function init() {
