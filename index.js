@@ -32,9 +32,9 @@ function getFileContents(dataFolder) {
         .replace(new RegExp(extension + "$"), "");
 
       console.log(chalk.blue("👓 reading " + filePath));
-      const content = await fs.readJSON(filePath);
+      const data = await fs.readJSON(filePath);
 
-      return { content, path: relativePath };
+      return { data, path: relativePath };
     } catch (error) {
       console.error(`⏩ skipped ${filePath}: ${error}`);
       return false;
