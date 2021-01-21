@@ -6,9 +6,8 @@ const fs = require("fs-extra");
 const chalk = require("chalk");
 const { cloneDeep } = require("lodash");
 
-const DEFAULT_LANGUAGE = "en";
-
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
+
 async function redaktor(cliParams) {
   const fileContents = await Promise.all(
     (cliParams.files || []).map(getFileContents(cliParams.dataFolder))
@@ -18,11 +17,7 @@ async function redaktor(cliParams) {
 
   const renderedFiles = await Promise.all(
     withoutSkippedFiles.map(
-      renderEachFile(
-        cliParams.htmlFolder,
-        cliParams.viewFolder,
-        cliParams.documentFolder
-      )
+      renderEachFile(cliParams.htmlFolder, cliParams.cmsFolder)
     )
   );
 
@@ -48,7 +43,7 @@ function getFileContents(dataFolder) {
   };
 }
 
-function renderEachFile(htmlFolder, viewFolder, documentFolder) {
+function renderEachFile(htmlFolder, cmsFolder) {
   return async (file, _, allFiles) => {
     const currentFolder = path.join(file.path, "..");
     const folderPattern =
@@ -66,19 +61,33 @@ function renderEachFile(htmlFolder, viewFolder, documentFolder) {
     const clonedFile = cloneDeep(file);
 
     console.log(chalk.cyan("⚙️ rendering " + file.path));
-    const documentFunction = require(path.resolve(documentFolder, "default"));
-    const viewFunction = require(path.resolve(
-      viewFolder,
-      file.data.default.required.pageType || "default"
+    const documentFunction = require(path.resolve(
+      path.join(cmsFolder, "page-documents"),
+      "default"
     ));
+
+    const pageType = file.data.default.required.pageType;
+    let viewFunction = () => Promise.resolve(`error rendering ${pageType}`);
+
+    try {
+      viewFunction = require(path.resolve(
+        path.join(cmsFolder, "page-views"),
+        file.data.default.required.pageType || "default"
+      ));
+    } catch (error) {}
+
+    try {
+      viewFunction = require(path.resolve(
+        path.join(cmsFolder, "system", "page-views"),
+        file.data.default.required.pageType || "default"
+      ));
+    } catch (error) {}
 
     const renderedView = await viewFunction(
       clonedFile,
       cloneDeep(filesInCurrentFolder),
       cloneDeep(allFiles)
     );
-
-    console.log(clonedFile);
 
     const renderedHtml = await documentFunction(clonedFile, renderedView);
 

@@ -9,8 +9,7 @@ const args = process.argv.slice(2);
 const params = {
   dataFolder: path.join(args[0], "data"),
   htmlFolder: path.join(args[0], "html"),
-  viewFolder: path.join(args[0], "cms", "page-views"),
-  documentFolder: path.join(args[0], "cms", "page-documents"),
+  cmsFolder: path.join(args[0], "cms"),
 };
 
 const jsonFiles = path.join(params.dataFolder, "**/*.json");

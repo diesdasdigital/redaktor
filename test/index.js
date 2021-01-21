@@ -17,8 +17,7 @@ test("errors", async function (is) {
     await redaktor({
       dataFolder: "test/data",
       htmlFolder: "test/html",
-      viewFolder: "WRONG",
-      documentFolder: "test/cms/page-documents",
+      cmsFolder: "WRONG",
       files: sourceFiles,
     });
     is.fail("incorrect view folder doesn’t error");
@@ -30,8 +29,7 @@ test("errors", async function (is) {
     await redaktor({
       dataFolder: "test/data",
       htmlFolder: "test/html",
-      viewFolder: "test/cms/page-views",
-      documentFolder: "test/cms/page-documents",
+      cmsFolder: "test/cms",
       files: sourceFiles,
     });
     is.pass("valid render function");
