@@ -61,10 +61,24 @@ function renderEachFile(htmlFolder, cmsFolder) {
     const clonedFile = cloneDeep(file);
 
     console.log(chalk.cyan("⚙️ rendering " + file.path));
-    const documentFunction = require(path.resolve(
-      path.join(cmsFolder, "page-documents"),
-      "default"
-    ));
+
+    let documentFunction = () => Promise.resolve(`error loading page document`);
+
+    try {
+      documentFunction = require(path.resolve(
+        path.join(cmsFolder, "page-documents"),
+        file.data.default.required.documentType || "default"
+      ));
+    } catch (error) {}
+
+    try {
+      documentFunction = require(path.resolve(
+        path.join(cmsFolder, "system", "page-documents"),
+        file.data.default.required.documentType || "default"
+      ));
+    } catch (error) {
+      throw new Error(`error loading page document: ${error}`);
+    }
 
     const pageType = file.data.default.required.pageType;
     let viewFunction = () => Promise.resolve(`error rendering ${pageType}`);

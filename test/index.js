@@ -20,9 +20,9 @@ test("errors", async function (is) {
       cmsFolder: "WRONG",
       files: sourceFiles,
     });
-    is.fail("incorrect view folder doesn’t error");
+    is.fail("incorrect cms folder doesn’t error");
   } catch (error) {
-    is.pass("render !== function throws");
+    is.pass("errors when cms folder cannot be found");
   }
 
   try {
