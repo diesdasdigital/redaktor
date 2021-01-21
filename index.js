@@ -1,7 +1,6 @@
 /* eslint no-console: 0 */
 "use strict";
 const path = require("path");
-const crypto = require("crypto");
 
 const fs = require("fs-extra");
 const yaml = require("yaml-front-matter");
@@ -10,7 +9,6 @@ const { cloneDeep } = require("lodash");
 
 const REGEX_NEWLINES = /^\n+/;
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
-
 async function redaktor(cliParams) {
   const fileContents = await Promise.all(
     (cliParams.files || []).map(getFileContents(cliParams.contentFolder))
