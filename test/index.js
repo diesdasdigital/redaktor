@@ -212,14 +212,62 @@ test.skip("usage", async function (is) {
 });
 
 test("CLI", async function (is) {
-  is.plan(1);
+  is.plan(7);
   await fs.remove("test/html");
 
   child_process.execSync("yarn build ./test");
-  const expected = await fs.readFile("test/expected/index.html", "UTF-8");
-  const actual = await fs.readFile("test/html/index.html", "UTF-8");
 
-  is.equal(expected, actual, "rendered html equals expected html");
+  const expected1 = await fs.readFile("test/expected/index.html", "utf-8");
+  const actual1 = await fs.readFile("test/html/index.html", "utf-8");
+  is.equal(expected1, actual1, "rendered html equals expected html");
+
+  const expected2 = await fs.readFile("test/expected/test.html", "utf-8");
+  const actual2 = await fs.readFile("test/html/test.html", "utf-8");
+  is.equal(expected2, actual2, "rendered html equals expected html");
+
+  const expected3 = await fs.readFile(
+    "test/expected/folder/index.html",
+    "utf-8"
+  );
+  const actual3 = await fs.readFile("test/html/folder/index.html", "utf-8");
+  is.equal(expected3, actual3, "rendered html equals expected html");
+
+  const expected4 = await fs.readFile(
+    "test/expected/folder/another.html",
+    "utf-8"
+  );
+  const actual4 = await fs.readFile("test/html/folder/another.html", "utf-8");
+  is.equal(expected4, actual4, "rendered html equals expected html");
+
+  const expected5 = await fs.readFile(
+    "test/expected/folder/another_folder/index.html",
+    "utf-8"
+  );
+  const actual5 = await fs.readFile(
+    "test/html/folder/another_folder/index.html",
+    "utf-8"
+  );
+  is.equal(expected5, actual5, "rendered html equals expected html");
+
+  const expected6 = await fs.readFile(
+    "test/expected/folder/another_folder/deeply-nested.html",
+    "utf-8"
+  );
+  const actual6 = await fs.readFile(
+    "test/html/folder/another_folder/deeply-nested.html",
+    "utf-8"
+  );
+  is.equal(expected6, actual6, "rendered html equals expected html");
+
+  const expected7 = await fs.readFile(
+    "test/expected/folder/another_folder/another-deeply-nested.html",
+    "utf-8"
+  );
+  const actual7 = await fs.readFile(
+    "test/html/folder/another_folder/another-deeply-nested.html",
+    "utf-8"
+  );
+  is.equal(expected7, actual7, "rendered html equals expected html");
 
   await fs.remove("test/html");
 });
