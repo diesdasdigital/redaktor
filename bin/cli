@@ -6,12 +6,10 @@ const redaktor = require("../");
 
 const args = process.argv.slice(2);
 
-const renderFolder = path.resolve(args[0], "cms", "page-views");
-
 const params = {
   dataFolder: path.join(args[0], "data"),
   htmlFolder: path.join(args[0], "html"),
-  defaultView: require(path.join(renderFolder, "default")),
+  viewFolder: path.join(args[0], "cms", "page-views"),
 };
 
 const jsonFiles = path.join(params.dataFolder, "**/*.json");

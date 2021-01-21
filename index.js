@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const chalk = require("chalk");
 const { cloneDeep } = require("lodash");
+const { exit } = require("process");
 
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
 async function redaktor(cliParams) {
@@ -16,7 +17,7 @@ async function redaktor(cliParams) {
 
   const renderedFiles = await Promise.all(
     withoutSkippedFiles.map(
-      renderEachFile(cliParams.htmlFolder, cliParams.defaultView)
+      renderEachFile(cliParams.htmlFolder, cliParams.viewFolder)
     )
   );
 
@@ -42,7 +43,7 @@ function getFileContents(dataFolder) {
   };
 }
 
-function renderEachFile(htmlFolder, renderFunction) {
+function renderEachFile(htmlFolder, viewFolder) {
   return async (file, _, allFiles) => {
     const currentFolder = path.join(file.path, "..");
     const folderPattern =
@@ -60,6 +61,11 @@ function renderEachFile(htmlFolder, renderFunction) {
     const clonedFile = cloneDeep(file);
 
     console.log(chalk.cyan("⚙️ rendering " + file.path));
+    const renderFunction = require(path.resolve(
+      viewFolder,
+      file.data.en.required.pageType || "default"
+    ));
+
     const renderedHtml = await renderFunction(
       clonedFile,
       cloneDeep(filesInCurrentFolder),

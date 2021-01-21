@@ -29,10 +29,8 @@ test("errors", async function (is) {
     await redaktor({
       dataFolder: "test/data",
       htmlFolder: "test/html",
+      viewFolder: "test/cms/page-views",
       files: sourceFiles,
-      defaultView: function () {
-        return Promise.resolve("html");
-      },
     });
     is.pass("valid render function");
   } catch (error) {
