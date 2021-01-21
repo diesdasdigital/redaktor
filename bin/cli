@@ -10,6 +10,7 @@ const params = {
   dataFolder: path.join(args[0], "data"),
   htmlFolder: path.join(args[0], "html"),
   viewFolder: path.join(args[0], "cms", "page-views"),
+  documentFolder: path.join(args[0], "cms", "page-documents"),
 };
 
 const jsonFiles = path.join(params.dataFolder, "**/*.json");

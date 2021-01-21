@@ -18,7 +18,11 @@ async function redaktor(cliParams) {
 
   const renderedFiles = await Promise.all(
     withoutSkippedFiles.map(
-      renderEachFile(cliParams.htmlFolder, cliParams.viewFolder)
+      renderEachFile(
+        cliParams.htmlFolder,
+        cliParams.viewFolder,
+        cliParams.documentFolder
+      )
     )
   );
 
@@ -44,7 +48,7 @@ function getFileContents(dataFolder) {
   };
 }
 
-function renderEachFile(htmlFolder, viewFolder) {
+function renderEachFile(htmlFolder, viewFolder, documentFolder) {
   return async (file, _, allFiles) => {
     const currentFolder = path.join(file.path, "..");
     const folderPattern =
@@ -62,16 +66,21 @@ function renderEachFile(htmlFolder, viewFolder) {
     const clonedFile = cloneDeep(file);
 
     console.log(chalk.cyan("⚙️ rendering " + file.path));
-    const renderFunction = require(path.resolve(
+    const documentFunction = require(path.resolve(documentFolder, "default"));
+    const viewFunction = require(path.resolve(
       viewFolder,
       file.data[DEFAULT_LANGUAGE].required.pageType || "default"
     ));
 
-    const renderedHtml = await renderFunction(
+    const renderedView = await viewFunction(
       clonedFile,
       cloneDeep(filesInCurrentFolder),
       cloneDeep(allFiles)
     );
+
+    console.log(clonedFile);
+
+    const renderedHtml = await documentFunction(clonedFile, renderedView);
 
     console.log(chalk.yellow("🖨 writing " + clonedFile.path));
     await fs.outputFile(destinationPath, renderedHtml);

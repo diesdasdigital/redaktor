@@ -17,10 +17,11 @@ test("errors", async function (is) {
     await redaktor({
       dataFolder: "test/data",
       htmlFolder: "test/html",
+      viewFolder: "WRONG",
+      documentFolder: "test/cms/page-documents",
       files: sourceFiles,
-      defaultView: "wrong",
     });
-    is.fail("missing render function doesn’t error");
+    is.fail("incorrect view folder doesn’t error");
   } catch (error) {
     is.pass("render !== function throws");
   }
@@ -30,6 +31,7 @@ test("errors", async function (is) {
       dataFolder: "test/data",
       htmlFolder: "test/html",
       viewFolder: "test/cms/page-views",
+      documentFolder: "test/cms/page-documents",
       files: sourceFiles,
     });
     is.pass("valid render function");
@@ -217,25 +219,25 @@ test("CLI", async function (is) {
 
   const expected1 = await fs.readFile("test/expected/index.html", "utf-8");
   const actual1 = await fs.readFile("test/html/index.html", "utf-8");
-  is.equal(expected1, actual1, "rendered html equals expected html");
+  is.equal(actual1, expected1, "rendered html equals expected html");
 
   const expected2 = await fs.readFile("test/expected/test.html", "utf-8");
   const actual2 = await fs.readFile("test/html/test.html", "utf-8");
-  is.equal(expected2, actual2, "rendered html equals expected html");
+  is.equal(actual2, expected2, "rendered html equals expected html");
 
   const expected3 = await fs.readFile(
     "test/expected/folder/index.html",
     "utf-8"
   );
   const actual3 = await fs.readFile("test/html/folder/index.html", "utf-8");
-  is.equal(expected3, actual3, "rendered html equals expected html");
+  is.equal(actual3, expected3, "rendered html equals expected html");
 
   const expected4 = await fs.readFile(
     "test/expected/folder/another.html",
     "utf-8"
   );
   const actual4 = await fs.readFile("test/html/folder/another.html", "utf-8");
-  is.equal(expected4, actual4, "rendered html equals expected html");
+  is.equal(actual4, expected4, "rendered html equals expected html");
 
   const expected5 = await fs.readFile(
     "test/expected/folder/another_folder/index.html",
@@ -245,7 +247,7 @@ test("CLI", async function (is) {
     "test/html/folder/another_folder/index.html",
     "utf-8"
   );
-  is.equal(expected5, actual5, "rendered html equals expected html");
+  is.equal(actual5, expected5, "rendered html equals expected html");
 
   const expected6 = await fs.readFile(
     "test/expected/folder/another_folder/deeply-nested.html",
@@ -255,7 +257,7 @@ test("CLI", async function (is) {
     "test/html/folder/another_folder/deeply-nested.html",
     "utf-8"
   );
-  is.equal(expected6, actual6, "rendered html equals expected html");
+  is.equal(actual6, expected6, "rendered html equals expected html");
 
   const expected7 = await fs.readFile(
     "test/expected/folder/another_folder/another-deeply-nested.html",
@@ -265,7 +267,7 @@ test("CLI", async function (is) {
     "test/html/folder/another_folder/another-deeply-nested.html",
     "utf-8"
   );
-  is.equal(expected7, actual7, "rendered html equals expected html");
+  is.equal(actual7, expected7, "rendered html equals expected html");
 
   await fs.remove("test/html");
 });
