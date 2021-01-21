@@ -1,12 +1,12 @@
 "use strict";
-var fs = require("fs-extra");
-var child_process = require("child_process");
-var path = require("path");
-var test = require("tape");
-var globby = require("globby");
-var redaktor = require("../");
+const fs = require("fs-extra");
+const child_process = require("child_process");
+const path = require("path");
+const test = require("tape");
+const globby = require("globby");
+const redaktor = require("../");
 
-var sourceFiles = globby.sync("test/data/**/*.json", { nodir: true });
+const sourceFiles = globby.sync("test/data/**/*.json", { nodir: true });
 
 test("errors", async function (is) {
   is.plan(2);
