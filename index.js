@@ -22,8 +22,6 @@ async function redaktor(cliParams) {
     )
   );
 
-  await callPostRender(cliParams.postRenderFile, renderedFiles);
-
   console.log(chalk.green(`✅ rendered ${renderedFiles.length} files`));
 }
 
@@ -79,14 +77,6 @@ function renderEachFile(htmlFolder, renderFunction) {
 
     return clonedFile;
   };
-}
-
-async function callPostRender(postRenderFunction, renderedFiles) {
-  if (typeof postRenderFunction === "function") {
-    console.log(chalk.yellow("🏁 calling post render"));
-    postRenderFunction(cloneDeep(renderedFiles));
-  }
-  return renderedFiles;
 }
 
 module.exports = redaktor;

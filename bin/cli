@@ -2,16 +2,18 @@
 "use strict";
 const path = require("path");
 const globby = require("globby");
-const yamlMarkdownToHtml = require("../");
+const redaktor = require("../");
 
 const args = process.argv.slice(2);
-const renderFolder = path.resolve(process.cwd(), args[2] || "render");
+const renderFolder = path.resolve(
+  path.join(process.cwd(), "cms", "page-views"),
+  args[2] || "default"
+);
 
 const params = {
-  contentFolder: args[0] || "content",
-  publicFolder: args[1] || "public",
-  renderFile: require(path.join(renderFolder, "render")),
-  postRenderFile: false
+  contentFolder: args[0] || "data",
+  publicFolder: args[1] || "html",
+  renderFile: require(path.join(renderFolder, "default"))
 };
 
 const markdownFiles = [
@@ -21,12 +23,7 @@ const markdownFiles = [
 
 async function init() {
   params.files = await globby(markdownFiles, { onlyFiles: true });
-
-  try {
-    params.postRenderFile = require(path.join(renderFolder, "post-render"));
-  } catch {}
-
-  await yamlMarkdownToHtml(params);
+  await redaktor(params);
 }
 
 init();

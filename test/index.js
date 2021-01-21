@@ -6,7 +6,7 @@ var globby = require("globby");
 var redaktor = require("../");
 
 var sourcePatterns = ["**/*.md", "**/*.markdown"].map(function (file) {
-  return path.join("test/content", file);
+  return path.join("test/data", file);
 });
 
 var sourceFiles = globby.sync(sourcePatterns, { nodir: true });
@@ -14,12 +14,12 @@ var sourceFiles = globby.sync(sourcePatterns, { nodir: true });
 test("errors", async function (is) {
   is.plan(2);
 
-  await fs.remove("test/public");
+  await fs.remove("test/html");
 
   try {
     await redaktor({
-      contentFolder: "test/content",
-      publicFolder: "test/public",
+      contentFolder: "test/data",
+      publicFolder: "test/html",
       files: sourceFiles,
       renderFile: ""
     });
@@ -30,8 +30,8 @@ test("errors", async function (is) {
 
   try {
     await redaktor({
-      contentFolder: "test/content",
-      publicFolder: "test/public",
+      contentFolder: "test/data",
+      publicFolder: "test/html",
       files: sourceFiles,
       renderFile: function () {
         return Promise.resolve("html");
@@ -42,23 +42,22 @@ test("errors", async function (is) {
     is.fail("valid parameters are failing");
   }
 
-  await fs.remove("test/public");
+  await fs.remove("test/html");
 });
 
 test("usage", async function (is) {
-  is.plan(142);
+  is.plan(137);
 
-  await fs.remove("test/public");
+  await fs.remove("test/html");
 
   await redaktor({
-    contentFolder: "test/content",
-    publicFolder: "test/public",
+    contentFolder: "test/data",
+    publicFolder: "test/html",
     files: sourceFiles,
-    renderFile: render,
-    postRenderFile: postRender
+    renderFile: render
   });
 
-  await fs.remove("test/public");
+  await fs.remove("test/html");
 
   function render(currentFile, filesInCurrentFolder, allFiles) {
     is.pass("render called");
@@ -99,153 +98,118 @@ test("usage", async function (is) {
     is.ok("path" in allFiles[0], "first item of allFiles has path");
 
     if (currentFile.path === "index") {
-      is.equal(
-        filesInCurrentFolder.length,
-        2,
-        "two other file in test/content"
-      );
+      is.equal(filesInCurrentFolder.length, 2, "two other file in test/data");
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "test";
         }),
-        'one of the files in test/content is "test"'
+        'one of the files in test/data is "test"'
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/index";
         }),
-        'one of the files in test/content is "folder/index"'
+        'one of the files in test/data is "folder/index"'
       );
     }
     if (currentFile.path === "test") {
-      is.equal(
-        filesInCurrentFolder.length,
-        2,
-        "two other file in test/content"
-      );
+      is.equal(filesInCurrentFolder.length, 2, "two other file in test/data");
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "index";
         }),
-        'one of the files in test/content is "index"'
+        'one of the files in test/data is "index"'
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/index";
         }),
-        'one of the files in test/content is "folder/index"'
+        'one of the files in test/data is "folder/index"'
       );
     }
     if (currentFile.path === "folder/another") {
       is.equal(
         filesInCurrentFolder.length,
         4,
-        "four other files in test/content/folder"
+        "four other files in test/data/folder"
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/empty";
         }),
-        'one of the files in test/content/folder is "empty"'
+        'one of the files in test/data/folder is "empty"'
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/yaml-only";
         }),
-        'one of the files in test/content/folder is "yaml-only"'
+        'one of the files in test/data/folder is "yaml-only"'
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/index";
         }),
-        'one of the files in test/content/folder is "index"'
+        'one of the files in test/data/folder is "index"'
       );
       is.ok(
         filesInCurrentFolder.some(function (file) {
           return file.path === "folder/another_folder/index";
         }),
-        'one of the files in test/content/folder is "another_folder/index"'
+        'one of the files in test/data/folder is "another_folder/index"'
       );
     }
     if (currentFile.path === "folder/another_folder/index") {
       is.equal(
         filesInCurrentFolder.length,
         2,
-        "two other file in test/content/folder/another_folder"
+        "two other file in test/data/folder/another_folder"
       );
       is.equal(
         filesInCurrentFolder[0].path,
         "folder/another_folder/another-deeply-nested",
-        'other file in test/content/folder/another_folder is "another-deeply-nested"'
+        'other file in test/data/folder/another_folder is "another-deeply-nested"'
       );
       is.equal(
         filesInCurrentFolder[1].path,
         "folder/another_folder/deeply-nested",
-        'other file in test/content/folder/another_folder is "deeply-nested"'
+        'other file in test/data/folder/another_folder is "deeply-nested"'
       );
     }
     if (currentFile.path === "folder/another_folder/deeply-nested") {
       is.equal(
         filesInCurrentFolder.length,
         2,
-        "two other file in test/content/folder/another_folder"
+        "two other file in test/data/folder/another_folder"
       );
       is.equal(
         filesInCurrentFolder[0].path,
         "folder/another_folder/another-deeply-nested",
-        'other file in test/content/folder/another_folder is "another-deeply-nested"'
+        'other file in test/data/folder/another_folder is "another-deeply-nested"'
       );
       is.equal(
         filesInCurrentFolder[1].path,
         "folder/another_folder/index",
-        'other file in test/content/folder/another_folder is "index"'
+        'other file in test/data/folder/another_folder is "index"'
       );
     }
     if (currentFile.path === "folder/another_folder/another-deeply-nested") {
       is.equal(
         filesInCurrentFolder.length,
         2,
-        "two other file in test/content/folder/another_folder"
+        "two other file in test/data/folder/another_folder"
       );
       is.equal(
         filesInCurrentFolder[0].path,
         "folder/another_folder/deeply-nested",
-        'other file in test/content/folder/another_folder is "deeply-nested"'
+        'other file in test/data/folder/another_folder is "deeply-nested"'
       );
       is.equal(
         filesInCurrentFolder[1].path,
         "folder/another_folder/index",
-        'other file in test/content/folder/another_folder is "index"'
+        'other file in test/data/folder/another_folder is "index"'
       );
     }
 
     return Promise.resolve(JSON.stringify(currentFile, null, 2));
-  }
-
-  function postRender(renderedFiles) {
-    is.pass("postRender called");
-
-    is.ok(
-      renderedFiles.every(function (file) {
-        return typeof file === "object";
-      }),
-      "renderedFiles contains objects"
-    );
-    is.equal(path.extname(renderedFiles[0].renderedPath), ".html");
-    is.equal(sourceFiles.length, renderedFiles.length);
-
-    is.deepEqual(
-      sourceFiles.map(function (file) {
-        return file
-          .replace(".md", "")
-          .replace(".markdown", "")
-          .replace("/content/", "/public/");
-      }),
-      renderedFiles.map(function (file) {
-        return file.renderedPath.replace(".html", "");
-      })
-    );
-
-    return Promise.resolve(renderedFiles);
   }
 });
