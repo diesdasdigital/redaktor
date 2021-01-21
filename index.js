@@ -9,14 +9,14 @@ const { cloneDeep } = require("lodash");
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
 async function redaktor(cliParams) {
   const fileContents = await Promise.all(
-    (cliParams.files || []).map(getFileContents(cliParams.contentFolder))
+    (cliParams.files || []).map(getFileContents(cliParams.dataFolder))
   );
 
   const withoutSkippedFiles = fileContents.filter(Boolean);
 
   const renderedFiles = await Promise.all(
     withoutSkippedFiles.map(
-      renderEachFile(cliParams.publicFolder, cliParams.renderFile)
+      renderEachFile(cliParams.htmlFolder, cliParams.defaultView)
     )
   );
 
@@ -24,7 +24,7 @@ async function redaktor(cliParams) {
 }
 
 function getFileContents(dataFolder) {
-  return async filePath => {
+  return async (filePath) => {
     try {
       const extension = path.extname(filePath);
       const relativePath = path

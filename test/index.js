@@ -15,10 +15,10 @@ test("errors", async function (is) {
 
   try {
     await redaktor({
-      contentFolder: "test/data",
-      publicFolder: "test/html",
+      dataFolder: "test/data",
+      htmlFolder: "test/html",
       files: sourceFiles,
-      renderFile: "wrong",
+      defaultView: "wrong",
     });
     is.fail("missing render function doesn’t error");
   } catch (error) {
@@ -27,10 +27,10 @@ test("errors", async function (is) {
 
   try {
     await redaktor({
-      contentFolder: "test/data",
-      publicFolder: "test/html",
+      dataFolder: "test/data",
+      htmlFolder: "test/html",
       files: sourceFiles,
-      renderFile: function () {
+      defaultView: function () {
         return Promise.resolve("html");
       },
     });
@@ -48,10 +48,10 @@ test.skip("usage", async function (is) {
   await fs.remove("test/html");
 
   await redaktor({
-    contentFolder: "test/data",
-    publicFolder: "test/html",
+    dataFolder: "test/data",
+    htmlFolder: "test/html",
     files: sourceFiles,
-    renderFile: render,
+    defaultView: render,
   });
 
   await fs.remove("test/html");
