@@ -1,0 +1,19 @@
+{
+  "default": {
+    "required": {
+      "title": "Components",
+      "pageType": "components"
+    },
+    "fields": {},
+    "components": [
+      {
+        "type": "headline",
+        "value": "Hello Redaktor!"
+      },
+      {
+        "type": "paragraph",
+        "value": "This is our hello world."
+      }
+    ]
+  }
+}
