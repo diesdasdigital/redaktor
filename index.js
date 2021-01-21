@@ -11,7 +11,7 @@ const { cloneDeep } = require("lodash");
 const REGEX_NEWLINES = /^\n+/;
 const REGEX_NO_FOLDER = /^[^\/]+(\/index)?$/;
 
-async function yamlMarkdownToHtml(cliParams) {
+async function redaktor(cliParams) {
   const fileContents = await Promise.all(
     (cliParams.files || []).map(getFileContents(cliParams.contentFolder))
   );
@@ -91,4 +91,4 @@ async function callPostRender(postRenderFunction, renderedFiles) {
   return renderedFiles;
 }
 
-module.exports = yamlMarkdownToHtml;
+module.exports = redaktor;

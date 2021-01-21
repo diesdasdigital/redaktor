@@ -3,7 +3,7 @@ var fs = require("fs-extra");
 var path = require("path");
 var test = require("tape");
 var globby = require("globby");
-var yamlMarkdownToHtml = require("../");
+var redaktor = require("../");
 
 var sourcePatterns = ["**/*.md", "**/*.markdown"].map(function (file) {
   return path.join("test/content", file);
@@ -17,7 +17,7 @@ test("errors", async function (is) {
   await fs.remove("test/public");
 
   try {
-    await yamlMarkdownToHtml({
+    await redaktor({
       contentFolder: "test/content",
       publicFolder: "test/public",
       files: sourceFiles,
@@ -29,7 +29,7 @@ test("errors", async function (is) {
   }
 
   try {
-    await yamlMarkdownToHtml({
+    await redaktor({
       contentFolder: "test/content",
       publicFolder: "test/public",
       files: sourceFiles,
@@ -50,7 +50,7 @@ test("usage", async function (is) {
 
   await fs.remove("test/public");
 
-  await yamlMarkdownToHtml({
+  await redaktor({
     contentFolder: "test/content",
     publicFolder: "test/public",
     files: sourceFiles,
