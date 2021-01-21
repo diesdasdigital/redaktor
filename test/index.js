@@ -1,5 +1,6 @@
 "use strict";
 var fs = require("fs-extra");
+var child_process = require("child_process");
 var path = require("path");
 var test = require("tape");
 var globby = require("globby");
@@ -212,4 +213,17 @@ test("usage", async function (is) {
 
     return Promise.resolve(JSON.stringify(currentFile, null, 2));
   }
+});
+
+test("CLI", async function (is) {
+  is.plan(1);
+  await fs.remove("test/html");
+
+  child_process.execSync("yarn build ./test");
+  const expected = await fs.readFile("test/expected/index.html", "UTF-8");
+  const actual = await fs.readFile("test/html/index.html", "UTF-8");
+
+  is.equal(expected, actual, "rendered html equals expected html");
+
+  await fs.remove("test/html");
 });

@@ -4,11 +4,13 @@ const path = require("path");
 const globby = require("globby");
 const redaktor = require("../");
 
-const renderFolder = path.resolve(process.cwd(), "cms", "page-views");
+const args = process.argv.slice(2);
+
+const renderFolder = path.resolve(args[0], "cms", "page-views");
 
 const params = {
-  contentFolder: "data",
-  publicFolder: "html",
+  contentFolder: path.join(args[0], "data"),
+  publicFolder: path.join(args[0], "html"),
   renderFile: require(path.join(renderFolder, "default"))
 };
 
