@@ -1,5 +1,5 @@
 {
-  "en": {
+  "default": {
     "required": {
       "title": "Deeply Nested",
       "pageType": "default"

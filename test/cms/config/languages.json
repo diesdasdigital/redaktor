@@ -1,0 +1,13 @@
+{
+  "default": {
+    "code": "en",
+    "direction": "ltr",
+    "locale": "en_US",
+    "name": "English"
+  },
+  "de": {
+    "direction": "ltr",
+    "locale": "de_DE",
+    "name": "German"
+  }
+}

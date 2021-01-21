@@ -69,7 +69,7 @@ function renderEachFile(htmlFolder, viewFolder, documentFolder) {
     const documentFunction = require(path.resolve(documentFolder, "default"));
     const viewFunction = require(path.resolve(
       viewFolder,
-      file.data[DEFAULT_LANGUAGE].required.pageType || "default"
+      file.data.default.required.pageType || "default"
     ));
 
     const renderedView = await viewFunction(

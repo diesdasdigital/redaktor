@@ -1,5 +1,5 @@
 {
-  "en": {
+  "default": {
     "required": {
       "title": "Folder",
       "pageType": "index"
